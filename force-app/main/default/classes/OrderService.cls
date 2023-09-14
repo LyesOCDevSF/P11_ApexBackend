@@ -1,15 +1,27 @@
 public with sharing class OrderService {
     
-        // Methode pour récupérer les ID des orders ayant des OrderItems associés
-        public static Set<Id> getOrderWithItems(Set<Id> orderIds){
-            //requete pour recuperer les id des order associé a un ou plusieurs orderitem
-            List<OrderItem> items = [SELECT OrderId FROM OrderItem WHERE OrderId IN :orderIds ];
-            //instanciation de la liste des id 
-            Set<Id> ordersWithItems = new Set<Id>();
-            // boucle for pour ajouter ajouter chaque orrder id associé a un order item 
-        for(OrderItem item : items) {
-            ordersWithItems.add(item.OrderId);
-        }
-        return ordersWithItems;
+
+    public static Boolean orderWithNoProduct (Id orderId){
+         
+        Integer productCount = [SELECT COUNT() FROM OrderItem WHERE OrderId = :orderId];
+
+        return productCount == 0;
     }
+
+    
+
+    // Vérifie s'il y a des orders restants pour un compte donné
+    public static Boolean hasRemainingOrders(Id accountId) {
+        Integer orderCount = [SELECT COUNT() FROM Order WHERE AccountId = :accountId];
+        return orderCount > 0;
+    }
+
+    // Décoche la case Active__c sur le compte si nécessaire
+    public static void deactivateAccountIfNoOrders(Id accountId) {
+        if (!hasRemainingOrders(accountId)) {
+            Account acctToUpdate = new Account(Id = accountId, Actif__c = false);
+            update acctToUpdate;
+        }
 }
+}
+    
