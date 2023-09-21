@@ -1,11 +1,41 @@
 public with sharing class OrderService {
     
 
-    public static Boolean orderWithNoProduct (Id orderId){
+   /* public static Boolean orderWithNoProduct (Id orderId){
          
         Integer productCount = [SELECT COUNT() FROM OrderItem WHERE OrderId = :orderId];
 
         return productCount == 0;
+    }
+    //liste des orders */
+
+    public static void verifyOrderProducts(List<Order> newOrders, Map<Id, Order> oldOrderMap) {
+        
+        List<Order> ordersToCheck = new List<Order>();
+        
+        for(Order newOrder : newOrders) {
+            Order oldOrder = oldOrderMap.get(newOrder.Id);
+            if(oldOrder.Status == 'Draft' && newOrder.Status == 'Active') {
+                ordersToCheck.add(newOrder);
+            }
+        }
+        
+        Set<Id> orderIdsToCheck = new Set<Id>();
+        for(Order order : ordersToCheck) {
+            orderIdsToCheck.add(order.Id);
+        }
+        
+        List<OrderItem> orderItems = [SELECT OrderId FROM OrderItem WHERE OrderId IN :orderIdsToCheck];
+        Set<Id> orderIdsWithProducts = new Set<Id>();
+        for(OrderItem oi : orderItems) {
+            orderIdsWithProducts.add(oi.OrderId);
+        }
+        
+        for(Order order : ordersToCheck) {
+            if(!orderIdsWithProducts.contains(order.Id)) {
+                order.addError('Veuillez saisir des produits avant d’activer l’order.');
+            }
+        }
     }
 
     
