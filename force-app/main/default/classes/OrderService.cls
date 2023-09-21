@@ -40,7 +40,7 @@ public with sharing class OrderService {
 
     
 
-    // Vérifie s'il y a des orders restants pour un compte donné
+   /* // Vérifie s'il y a des orders restants pour un compte donné
     public static Boolean hasRemainingOrders(Id accountId) {
         Integer orderCount = [SELECT COUNT() FROM Order WHERE AccountId = :accountId];
         return orderCount > 0;
@@ -52,6 +52,37 @@ public with sharing class OrderService {
             Account acctToUpdate = new Account(Id = accountId, Actif__c = false);
             update acctToUpdate;
         }
+}*/
+
+  // Méthode pour désactiver la case Active__c pour un compte si tous les Orders associés ont été supprimés
+  public static void deactivateAccountIfNoOrders(List<Order> deletedOrders) {
+    // Collecter les AccountId des Orders supprimés
+    Set<Id> accountIdsToCheck = new Set<Id>();
+    for (Order ord : deletedOrders) {
+        accountIdsToCheck.add(ord.AccountId);
+    }
+
+    // Trouver les comptes avec des Orders restants
+    List<AggregateResult> aggResults = [SELECT AccountId FROM Order WHERE AccountId IN :accountIdsToCheck GROUP BY AccountId];
+    Set<Id> accountIdsWithOrders = new Set<Id>();
+    for (AggregateResult ar : aggResults) {
+        accountIdsWithOrders.add((Id) ar.get('AccountId'));
+    }
+
+    // Trouver les comptes à mettre à jour (ceux qui n'ont pas d'Orders restants)
+    List<Account> accountsToUpdate = new List<Account>();
+    for (Id accountId : accountIdsToCheck) {
+        if (!accountIdsWithOrders.contains(accountId)) {
+            accountsToUpdate.add(new Account(Id = accountId, Actif__c = false));
+        }
+    }
+
+    // Mise à jour des comptes
+    if (accountsToUpdate.size() > 0) {
+        update accountsToUpdate;
+    }
 }
 }
+
+
     
