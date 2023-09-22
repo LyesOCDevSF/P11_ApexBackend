@@ -28,6 +28,6 @@ global class AccountBatch implements Database.Batchable<sObject> {
     }
     
     global void finish(Database.BatchableContext bc) {
-        // Rien à faire ici pour le moment
+        
     }
 }
