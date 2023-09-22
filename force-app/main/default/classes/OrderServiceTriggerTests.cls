@@ -10,6 +10,7 @@ private class OrderServiceTriggerTests {
         List<Order> testOrders = DataFactory.createOrders(1, testAccounts[0].Id);
         insert testOrders;
         
+        
         // Activer l'Order sans produit
         testOrders[0].Status = 'Activated';
         Test.startTest();
