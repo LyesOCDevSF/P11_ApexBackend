@@ -58,7 +58,7 @@ public with sharing class DataFactory {
         return orders;
     }
 
-    public static List<OrderItem> createOrderItems(Integer numOrderItems, Id orderId, Id pricebookEntryId, Integer quantity, Decimal unitPrice) {
+   /* public static List<OrderItem> createOrderItems(Integer numOrderItems, Id orderId, Id pricebookEntryId, Integer quantity, Decimal unitPrice) {
         List<OrderItem> orderItems = new List<OrderItem>();
         for(Integer i = 0; i < numOrderItems; i++) {
             orderItems.add(new OrderItem(
@@ -69,5 +69,5 @@ public with sharing class DataFactory {
             ));
         }
         return orderItems;
-    }
+    }*/
 }
