@@ -54,7 +54,7 @@ public with sharing class OrderService {
         }
 }*/
 
-  // Méthode pour désactiver la case Active__c pour un compte si tous les Orders associés ont été supprimés
+  // Méthode pour désactiver la case Actif__c pour un compte si tous les Orders associés ont été supprimés
   public static void deactivateAccountIfNoOrders(List<Order> deletedOrders) {
     // Collecter les AccountId des Orders supprimés
     Set<Id> accountIdsToCheck = new Set<Id>();
