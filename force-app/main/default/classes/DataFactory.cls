@@ -9,7 +9,7 @@ public with sharing class DataFactory {
         return accounts;
     }
 
-    public static List<Contract> createContracts(Integer numContracts, Id accountId) {   
+   /* public static List<Contract> createContracts(Integer numContracts, Id accountId) {   
         List<Contract> contracts = new List<Contract>();
         for(Integer i = 0; i < numContracts; i++) {
             contracts.add(new Contract(
@@ -20,9 +20,9 @@ public with sharing class DataFactory {
             ));
         }
         return contracts;
-    }
+    }*/
 
-    public static List<Product2> createProducts(Integer numProducts) {
+    /*public static List<Product2> createProducts(Integer numProducts) {
         List<Product2> products = new List<Product2>();
         for(Integer i = 0; i < numProducts; i++) {
             products.add(new Product2(Name = 'Test Product ' + i, IsActive = true));
@@ -42,7 +42,7 @@ public with sharing class DataFactory {
             ));
         }
         return pbeList;
-    }
+    }*/
 
     public static List<Order> createOrders(Integer numOrders, Id accountId) {
         Id standardPricebookId = Test.getStandardPricebookId();
