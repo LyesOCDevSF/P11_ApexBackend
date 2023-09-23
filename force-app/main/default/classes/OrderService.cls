@@ -12,25 +12,26 @@ public with sharing class OrderService {
     public static void verifyOrderProducts(List<Order> newOrders, Map<Id, Order> oldOrderMap) {
         
         List<Order> ordersToCheck = new List<Order>();
-        
+        //Identification des commandes qui passent de draft à Active 
         for(Order newOrder : newOrders) {
             Order oldOrder = oldOrderMap.get(newOrder.Id);
             if(oldOrder.Status == 'Draft' && newOrder.Status == 'Active') {
                 ordersToCheck.add(newOrder);
             }
         }
-        
+        // recuperation des commandes qui doivent etre vérifiées 
         Set<Id> orderIdsToCheck = new Set<Id>();
         for(Order order : ordersToCheck) {
             orderIdsToCheck.add(order.Id);
         }
-        
+
+        //Récuperation des produits pour les commandes à vérifier 
         List<OrderItem> orderItems = [SELECT OrderId FROM OrderItem WHERE OrderId IN :orderIdsToCheck];
         Set<Id> orderIdsWithProducts = new Set<Id>();
         for(OrderItem oi : orderItems) {
             orderIdsWithProducts.add(oi.OrderId);
         }
-        
+        //Vérifie les commande à valider, s'il n'y a pas de produit = message d'erreur
         for(Order order : ordersToCheck) {
             if(!orderIdsWithProducts.contains(order.Id)) {
                 order.addError('Veuillez saisir des produits avant d’activer l’order.');
@@ -73,7 +74,7 @@ public with sharing class OrderService {
     List<Account> accountsToUpdate = new List<Account>();
     for (Id accountId : accountIdsToCheck) {
         if (!accountIdsWithOrders.contains(accountId)) {
-            accountsToUpdate.add(new Account(Id = accountId, Actif__c = false));
+            accountsToUpdate.add(new Account(Id = accountId, Actif__c = false)); // Désactivation de la case en conséquence 
         }
     }
 
