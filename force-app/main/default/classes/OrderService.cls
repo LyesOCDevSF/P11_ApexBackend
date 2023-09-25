@@ -1,14 +1,6 @@
 public with sharing class OrderService {
     
 
-   /* public static Boolean orderWithNoProduct (Id orderId){
-         
-        Integer productCount = [SELECT COUNT() FROM OrderItem WHERE OrderId = :orderId];
-
-        return productCount == 0;
-    }
-    //liste des orders */
-
     public static void verifyOrderProducts(List<Order> newOrders, Map<Id, Order> oldOrderMap) {
         
         List<Order> ordersToCheck = new List<Order>();

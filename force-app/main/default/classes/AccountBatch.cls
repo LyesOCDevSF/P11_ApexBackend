@@ -14,7 +14,7 @@ global class AccountBatch implements Database.Batchable<sObject> {
     }
     
     global Database.QueryLocator start(Database.BatchableContext bc) {
-        // Votre requête utilisera les sets pour filtrer les comptes à traiter
+        // Utilisation des sets pour filtrer les comptes à traiter
         return Database.getQueryLocator([
             SELECT Id, (SELECT Id FROM Orders), (SELECT Id FROM Tasks WHERE Subject = 'Call')
             FROM Account 

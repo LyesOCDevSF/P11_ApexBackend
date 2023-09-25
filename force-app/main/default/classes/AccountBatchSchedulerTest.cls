@@ -19,8 +19,8 @@ private class AccountBatchSchedulerTest {
         
         // Vérifier que le job a été prévue
         //CronTrigger scheduledJob = [SELECT Id, cronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE Id = :jobId];
-       // System.assertEquals(cronExpression, scheduledJob.cronExpression);
-       // System.assertEquals(1, scheduledJob.TimesTriggered); 
+      // System.assertEquals(cronExpression, scheduledJob.cronExpression);
+       //System.assertEquals(1, scheduledJob.TimesTriggered); 
         
         Integer scheduledJobsCount = [SELECT COUNT() FROM CronTrigger WHERE Id = :jobId AND State = 'WAITING'];
         System.assertEquals(1, scheduledJobsCount);
