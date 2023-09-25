@@ -44,6 +44,6 @@ global class AccountBatch implements Database.Batchable<sObject> {
     }
     
     global void finish(Database.BatchableContext bc) {
-        // Code final s'il est nécessaire
+          
     }
 }
